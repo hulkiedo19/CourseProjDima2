@@ -1,0 +1,382 @@
+﻿<Window x:Class="CourseProj.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CourseProj"
+        xmlns:vm="clr-namespace:CourseProj.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.05*"/>
+            <RowDefinition Height="0.9*"/>
+        </Grid.RowDefinitions>
+
+        <Menu
+            Height="20"
+            VerticalAlignment="Top"
+            Grid.Row="0">
+
+            <MenuItem
+                Header="Файл">
+
+                <MenuItem 
+                    Header="Создать"/>
+                <MenuItem 
+                    Header="Открыть"/>
+                <MenuItem 
+                    Header="Обновить"/>
+                <MenuItem 
+                    Header="Выход"/>
+
+            </MenuItem>
+
+            <MenuItem
+                Header="Помощь">
+
+                <MenuItem 
+                    Header="Настройки"/>
+                <MenuItem 
+                    Header="О нас"/>
+
+            </MenuItem>
+
+        </Menu>
+
+        <TabControl
+            Grid.Row="1">
+
+            <TabItem
+                Header="Объекты">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.10*"/>
+                        <RowDefinition Height="0.75*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Margin="0, 5, 0, 5">
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Удалить элемент"
+                            Command="{Binding DeleteObject, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=ObjectGrid, Path=Items}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Обновить"
+                            Command="{Binding UpdateObjects, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=ObjectGrid, Path=Items}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Выход"
+                            Click="Button_Click"/>
+
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Margin="4">
+
+                        <TextBlock 
+                            Text="ИД типа объекта: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="50"
+                            Text="{Binding ObjectTypeId, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock 
+                            Text="ИД отдела: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="50"
+                            Text="{Binding DepartmentId, UpdateSourceTrigger=PropertyChanged}"/>
+                        
+                        <TextBlock 
+                            Text="Инвентарный номер: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="50"
+                            Text="{Binding InvNumber, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock 
+                            Text="Количество: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="50"
+                            Text="{Binding AmountObjects, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button 
+                            Width="120"
+                            Margin="4, 0, 4, 0"
+                            Content="Добавить объект"
+                            Command="{Binding AddObject, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=ObjectGrid, Path=Items}"/>
+
+                    </StackPanel>
+
+                    <DataGrid
+                            Grid.Row="2"
+                            x:Name="ObjectGrid"
+                            AutoGenerateColumns="False"
+                            ScrollViewer.CanContentScroll="True"
+                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            ItemsSource="{Binding Objects, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedObject, TargetNullValue={x:Static CollectionView.NewItemPlaceholder}}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                    Header="Идентификатор"
+                                    Width="*"
+                                    Binding="{Binding Path=ObjectId}"/>
+                            <DataGridTextColumn 
+                                    Header="Название объекта"
+                                    Width="*"
+                                    Binding="{Binding Path=ObjectType1.Name}"/>
+                            <DataGridTextColumn 
+                                    Header="Название отдела"
+                                    Width="*"
+                                    Binding="{Binding Path=Department1.DepartmentName}"/>
+                            <DataGridTextColumn 
+                                    Header="Инвентарный номер"
+                                    Width="*"
+                                    Binding="{Binding Path=InventoryNumber}"/>
+                            <DataGridTextColumn 
+                                    Header="Количество"
+                                    Width="*"
+                                    Binding="{Binding Path=AmountObjects}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+           
+            <TabItem
+                Header="Типы объектов">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.10*"/>
+                        <RowDefinition Height="0.75*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Margin="0, 5, 0, 5">
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Удалить тип"
+                            Command="{Binding DeleteObjectType, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=TypesGrid, Path=Items}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Обновить"
+                            Command="{Binding UpdateObjectType, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=TypesGrid, Path=Items}"
+                            />
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Выход"
+                            Click="Button_Click"/>
+
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Margin="4">
+
+                        <TextBlock 
+                            Text="Название: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="100"
+                            Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock 
+                            Text="Описание: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="200"
+                            Text="{Binding DescriptionObjectType, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="10, 0, 4, 0"
+                            Content="Добавить тип"
+                            Command="{Binding AddObjectType, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=TypesGrid, Path=Items}"/>
+
+                    </StackPanel>
+
+                    <DataGrid
+                        Grid.Row="2"
+                        x:Name="TypesGrid"
+                        AutoGenerateColumns="False"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ItemsSource="{Binding ObjectTypes, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedObjectType, TargetNullValue={x:Static CollectionView.NewItemPlaceholder}}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                    Header="Идентификатор"
+                                    Width="*"
+                                    Binding="{Binding Path=ObjectTypeId}"/>
+                            <DataGridTextColumn 
+                                    Header="Название"
+                                    Width="*"
+                                    Binding="{Binding Path=Name}"/>
+                            <DataGridTextColumn 
+                                    Header="Описание"
+                                    Width="*"
+                                    Binding="{Binding Path=Description}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </Grid>
+
+            </TabItem>
+
+            <TabItem
+                Header="Отделы">
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.15*"/>
+                        <RowDefinition Height="0.10*"/>
+                        <RowDefinition Height="0.75*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel
+                        Grid.Row="0"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Margin="0, 5, 0, 5">
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Удалить отдел"
+                            Command="{Binding DeleteDepartment, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=DepartmentsGrid, Path=Items}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Обновить"
+                            Command="{Binding UpdateDepartment, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=DepartmentsGrid, Path=Items}"
+                            />
+
+                        <Button 
+                            Width="100"
+                            Margin="5, 0, 5, 0"
+                            Content="Выход"
+                            Click="Button_Click"/>
+
+                    </StackPanel>
+
+                    <StackPanel
+                        Grid.Row="1"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal"
+                        Margin="4">
+
+                        <TextBlock 
+                            Text="Название: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="100"
+                            Text="{Binding DepartmentName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <TextBlock 
+                            Text="Описание: "
+                            Margin="4, 0, 4, 0"/>
+                        <TextBox 
+                            Width="200"
+                            Text="{Binding DepartmentDescription, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Button 
+                            Width="100"
+                            Margin="10, 0, 4, 0"
+                            Content="Добавить отдел"
+                            Command="{Binding AddDepartment, UpdateSourceTrigger=PropertyChanged}"
+                            CommandParameter="{Binding ElementName=DepartmentsGrid, Path=Items}"/>
+
+                    </StackPanel>
+
+                    <DataGrid
+                        Grid.Row="2"
+                        x:Name="DepartmentsGrid"
+                        AutoGenerateColumns="False"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+                        ItemsSource="{Binding Departments, UpdateSourceTrigger=PropertyChanged}"
+                            SelectedItem="{Binding SelectedDepartment, TargetNullValue={x:Static CollectionView.NewItemPlaceholder}}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn 
+                                    Header="Идентификатор"
+                                    Width="*"
+                                    Binding="{Binding Path=DepartmentId}"/>
+                            <DataGridTextColumn 
+                                    Header="Название"
+                                    Width="*"
+                                    Binding="{Binding Path=DepartmentName}"/>
+                            <DataGridTextColumn 
+                                    Header="Описание"
+                                    Width="*"
+                                    Binding="{Binding Path=DepartmentDescription}"/>
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+                    
+                </Grid>
+                
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
